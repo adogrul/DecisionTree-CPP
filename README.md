@@ -3,7 +3,7 @@
 This function recursively builds a decision tree based on a dataset and a list of features.
 
 ```python
-def Build_Decision_Tree(D, Features):
+ Build_Decision_Tree(D, Features):
     """
     Function to build a decision tree.
 
