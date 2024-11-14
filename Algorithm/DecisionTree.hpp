@@ -42,14 +42,14 @@ struct Node {
         : isLeaf(isLeaf), label(label), featureIndex(featureIndex), threshold(threshold) {}
 };
 
-class DecisionTree {
+class __decisionTree__ {
 public:
     std::shared_ptr<Node> root;
     void fit(const std::vector<std::vector<double>>& data, const std::vector<int>& labels) {
         root = buildTree(data, labels);
     }
     int predict(const std::vector<double>& sample) {
-        return predictRecursive(root, sample);
+        return __predictRecursive__(root, sample);
     }
 
 private:
@@ -66,7 +66,7 @@ private:
             for (const auto& sample : data) {
                 double threshold = sample[feature];
                 auto [leftLabels, rightLabels] = splitLabels(data, labels, feature, threshold);
-                double infoGain = calculateInformationGain(labels, leftLabels, rightLabels);
+                double infoGain = __calculateInformationGain__(labels, leftLabels, rightLabels);
 
                 if (infoGain > bestInfoGain) {
                     bestInfoGain = infoGain;
@@ -91,16 +91,16 @@ private:
         return node;
     }
 
-    int predictRecursive(std::shared_ptr<Node> node, const std::vector<double>& sample) {
+    int __predictRecursive__(std::shared_ptr<Node> node, const std::vector<double>& sample) {
         if (node->isLeaf) return node->label;
 
         if (sample[node->featureIndex] <= node->threshold)
-            return predictRecursive(node->left, sample);
+            return __predictRecursive__(node->left, sample);
         else
-            return predictRecursive(node->right, sample);
+            return __predictRecursive__(node->right, sample);
     }
 
-    double calculateEntropy(const std::vector<int>& labels) {
+    double __calculateEntropy__(const std::vector<int>& labels) {
         std::map<int, int> labelCounts;
         for (int label : labels) labelCounts[label]++;
         /*
@@ -116,10 +116,10 @@ private:
         return entropy;
     }
 
-    double calculateInformationGain(const std::vector<int>& parentLabels, const std::vector<int>& leftLabels, const std::vector<int>& rightLabels) {
-        double parentEntropy = calculateEntropy(parentLabels);
-        double leftEntropy = calculateEntropy(leftLabels);
-        double rightEntropy = calculateEntropy(rightLabels);
+    double __calculateInformationGain__(const std::vector<int>& parentLabels, const std::vector<int>& leftLabels, const std::vector<int>& rightLabels) {
+        double parentEntropy = __calculateEntropy__(parentLabels);
+        double leftEntropy = __calculateEntropy__(leftLabels);
+        double rightEntropy = __calculateEntropy__(rightLabels);
         /*
             Information Gain(S, A) = Entropy(S) - ∑v∈Values(A) (|Sv| / |S|) * Entropy(Sv)
             where S is the dataset, A is the feature, and Sv is the subset of S for which feature A has value v.
